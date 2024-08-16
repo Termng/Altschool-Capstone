@@ -16,11 +16,11 @@ SQLALCHEMY_DATABASE_URL = f"{settings.database_url}"
 
 
 
-
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
 
 
 
