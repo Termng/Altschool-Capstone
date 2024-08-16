@@ -1,7 +1,6 @@
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
-from .import models, conn
-from schemas.users import *
+from .import schemas, models, database
 from fastapi import status, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -10,9 +9,9 @@ from .config import settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 
-SECRET_KEY = settings.secret_key #torahtorah
-ALGORITHM = settings.algorithm #HS256
-ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expires #450
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expires
 
 
 def create_token(data: dict):
@@ -30,14 +29,14 @@ def verify_access_token(token: str, credentials_exception):
         
         if id is None:
             raise credentials_exception
-        token_data =TokenData(id=id)
+        token_data = schemas.TokenData(id=id)
         
     except JWTError:
         raise credentials_exception
     
     return token_data
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(conn.get_db)):
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)):
     credentials_exception = HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail='Could not vaidate credentials', headers={'WWW-Authenticate': "Bearer"})
     token = verify_access_token(token, credentials_exception)
     user = db.query(models.User).filter(models.User.id == token.id).first()

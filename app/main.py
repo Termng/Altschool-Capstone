@@ -2,6 +2,8 @@ from fastapi import FastAPI
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+from passlib.context import CryptContext
+
 from routers import movie, users, login, rating,comment
 from utils.conn import engine, Base, SessionLocal
 from utils.config import settings
@@ -25,6 +27,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @app.get("/")
