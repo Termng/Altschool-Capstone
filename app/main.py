@@ -2,13 +2,13 @@ from fastapi import FastAPI
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
-from .routers import movie, users, login, rating,comment
-from .utils.conn import engine, Base, SessionLocal
-from .utils.config import settings
+from app.routers import movie, users, login, rating,comment
+from app.utils.conn import engine, Base, SessionLocal
+from app.utils.config import settings
 from fastapi.middleware.cors import CORSMiddleware
 
 
-
+     
 
 app = FastAPI(
     title= "Movie Database - OPENAPI 4.5",
