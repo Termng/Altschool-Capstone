@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.orm import relationship
@@ -17,8 +17,9 @@ class Movie(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable= False, server_default=text("now()"))
     user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     user= relationship("User")
-    # comments = relationship("Comment", backref="movie", ondelete="CASCADE")
-    # ratings = relationship("Rating", backref="movie", ondelete="CASCADE")
+    ratings = relationship("Rating", back_populates="movie")
+    comments = relationship("Comment", back_populates="movie")
+    
     
     
 
@@ -36,19 +37,29 @@ class User(Base):
 
 class Comment(Base):
     __tablename__= 'comment'
-    id = Column(Integer, primary_key=True, nullable=False )
+
+    id = Column(Integer, primary_key=True, index=True, nullable=False )
+    text = Column(Text)
     user_id = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
-    movie_id = Column(Integer, ForeignKey('movie.id', ondelete='CASCADE'), primary_key=True)
+    movie_id = Column(Integer, ForeignKey('Movie.id', ondelete='CASCADE'), primary_key=True)
     comment = Column(String, nullable= False)
+    parent_id = Column(Integer, ForeignKey("comments.id"), nullable=True)
     
+    movie = relationship("Movie", back_populates="comments")
+    user = relationship("User", back_populates="comments")
+    replies = relationship("Comment", backref="parent", remote_side=[id])
 
-
+    
 class Rating(Base):
     __tablename__= 'rating'
-    id = Column(Integer, primary_key=True, nullable=False )
+
+    id = Column(Integer, primary_key=True, index=True, nullable=False )
     user_id = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
-    movie_id = Column(Integer, ForeignKey('movie.id', ondelete='CASCADE'), primary_key=True)
+    movie_id = Column(Integer, ForeignKey('Movie.id', ondelete='CASCADE'), primary_key=True)
     Rating = Column(Integer, nullable= False)
+
+    movie = relationship("Movie", back_populates="ratings")
+    user = relationship("User", back_populates="ratings")
     
 
     

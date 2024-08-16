@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
-from routers import movie, users, login, rating
+from routers import movie, users, login, rating,comment
 from utils.conn import engine, Base, SessionLocal
 
 
@@ -45,5 +45,6 @@ app.include_router(movie.router)
 app.include_router(users.router)
 app.include_router(login.router)
 app.include_router(rating.router)
+app.include_router(comment.router)
 
 

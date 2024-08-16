@@ -11,3 +11,6 @@ class Rate(IntEnum):
 class Rating(BaseModel):
     movie_ID : int
     rating: Rate
+
+
+
