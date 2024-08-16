@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from typing import List, Optional
-# from ..utils import config, conn, models, oAuth 
 from sqlalchemy.orm import Session
-from utils.conn import get_db, engine
-from schemas.movie import movieBase, movieEdit
-from utils.models import Movie
-from utils import models
-from utils.oAuth import get_current_user
+from ..utils.conn import get_db, engine
+from ..schemas.movie import movieBase, movieEdit
+from ..utils.models import Movie
+from ..utils import models
+from ..utils.oAuth import get_current_user
+
 
 
 
