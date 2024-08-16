@@ -7,7 +7,6 @@ from .conn import Base
 
 class Movie(Base):
     __tablename__ = "movie"
-    
     id= Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
     synopsis = Column(String, nullable= False)

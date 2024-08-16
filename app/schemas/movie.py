@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from typing import List
 
 class movieBase(BaseModel):
-    id: int
     title: str
     synopsis: str
     release_year: int
@@ -10,8 +9,8 @@ class movieBase(BaseModel):
     duration: int
     is_g_rated: bool = True
     
-    class Config:
-        orm_mode = True
+    # class Config:
+    #     orm_mode = True
     
     
 
