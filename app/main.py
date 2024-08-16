@@ -4,20 +4,32 @@ from psycopg2.extras import RealDictCursor
 import time
 from routers import movie, users, login, rating,comment
 from utils.conn import engine, Base, SessionLocal
+from .utils.config import settings
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
 
 app = FastAPI(
     title= "Movie Database - OPENAPI 4.5",
-    description = "movie database using FastAPI & Postgres",
-    # docs_url="/"
+    description = "Movie database using FastAPI & Postgres",
+    docs_url="/"
 )
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 def home_page():
     return {"message": "This is Torah's application"}
-
 
 
 Base.metadata.create_all(bind=engine)
